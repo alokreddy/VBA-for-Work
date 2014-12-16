@@ -1,0 +1,6 @@
+Public Sub select_Multi_Items()
+'
+' select_litres Macro
+'
+    ActiveSheet.Range("J1").AutoFilter Field:=10, Criteria1:="M Items"
+End Sub
