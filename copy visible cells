@@ -1,0 +1,8 @@
+Public Sub visibleCells()
+'
+' visibleCells Macro
+' selects only the visible cells.
+'
+    Selection.SpecialCells(xlCellTypeVisible).Select
+    
+End Sub
