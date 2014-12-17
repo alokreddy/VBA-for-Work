@@ -1,0 +1,144 @@
+Sub copy_ranges_Alok()
+
+Dim x As Workbook
+Dim y As Workbook
+Dim i As Integer
+Dim finalrow As Long
+
+    Application.ScreenUpdating = False
+    Application.EnableEvents = False
+    Application.Calculation = xlCalculationManual
+    Application.CutCopyMode = False
+        
+'## Open both workbooks first:
+Set x = Workbooks.Open("C:\Users\alokkt\Desktop\IT Models\IT Model 2014 Venezuela.xlsx")
+'Set x = Workbooks.Open("C:\Users\alokkt\Desktop\IT Model 2014 Argentina.xlsx")
+
+
+Set y = Workbooks.Open("C:\Users\alokkt\Desktop\Multi-Packaging by Weight\Venezuela (23424982).xlsx")
+'Set y = Workbooks.Open("C:\Users\alokkt\Desktop\Argentina (23424747).xlsx")
+finalrow = Cells(Rows.Count, 1).End(xlUp).Row
+ 
+
+'IT Model Multi-product type
+x.Activate
+Sheets("Multipack").Select
+Range("K1").Select
+Selection.Offset(rowOffset:=1, columnOffset:=0).Activate
+Call copyvisible
+
+
+'Now, paste to Country worksheet: Multi-Product type
+y.Activate
+Sheets("Quantity by Weight").Select
+Range("A3:A" & finalrow).Select
+    Selection.PasteSpecial Paste:=xlPasteValues
+
+y.Activate
+Sheets("Qty by Number of Multipacks").Select
+Range("A3:A" & finalrow).Select
+    Selection.PasteSpecial Paste:=xlPasteValues
+
+
+'IT Model Multi-Material
+x.Activate
+Sheets("Multipack").Select
+Range("D1").Select
+Selection.Offset(rowOffset:=1, columnOffset:=0).Activate
+Call copyvisible
+
+
+'Now, paste to Country worksheet: Multi-Material
+y.Activate
+Sheets("Quantity by Weight").Select
+Range("C3:C" & finalrow).Select
+    Selection.PasteSpecial Paste:=xlPasteValues
+
+y.Activate
+Sheets("Qty by Number of Multipacks").Select
+Range("C3:C" & finalrow).Select
+    Selection.PasteSpecial Paste:=xlPasteValues
+    
+
+'IT Model Multi-Type
+x.Activate
+Sheets("Multipack").Select
+Range("E1").Select
+Selection.Offset(rowOffset:=1, columnOffset:=0).Activate
+Call copyvisible
+
+'Now, paste to Country worksheet:Multi-Type
+y.Activate
+Sheets("Quantity by Weight").Select
+Range("E3:E" & finalrow).Select
+    Selection.PasteSpecial Paste:=xlPasteValues
+    
+y.Activate
+Sheets("Qty by Number of Multipacks").Select
+Range("E3:E" & finalrow).Select
+    Selection.PasteSpecial Paste:=xlPasteValues
+
+'2012 Volume figures
+x.Activate
+Sheets("Multipack").Select
+Range("L1").Select
+Selection.Offset(rowOffset:=1, columnOffset:=0).Activate
+Call copyvisible
+
+y.Activate
+Sheets("Quantity by Weight").Select
+Range("AH3:AH" & finalrow).Select
+    Selection.PasteSpecial Paste:=xlPasteValues
+    
+
+    
+'2013 Volume figures
+x.Activate
+Sheets("Multipack").Select
+Range("N1").Select
+Selection.Offset(rowOffset:=1, columnOffset:=0).Activate
+Call copyvisible
+
+y.Activate
+Sheets("Quantity by Weight").Select
+Range("AI3:AI" & finalrow).Select
+    Selection.PasteSpecial Paste:=xlPasteValues
+    
+    
+'2012 Units figures
+x.Activate
+Sheets("Multipack").Select
+Range("M1").Select
+Selection.Offset(rowOffset:=1, columnOffset:=0).Activate
+Call copyvisible
+ 
+y.Activate
+Sheets("Qty by Number of Multipacks").Select
+Range("AH3:AH" & finalrow).Select
+    Selection.PasteSpecial Paste:=xlPasteValues
+
+'2013 Units figures
+x.Activate
+Sheets("Multipack").Select
+Range("O1").Select
+Selection.Offset(rowOffset:=1, columnOffset:=0).Activate
+Call copyvisible
+
+y.Activate
+Sheets("Qty by Number of Multipacks").Select
+Range("AI3:AI" & finalrow).Select
+    Selection.PasteSpecial Paste:=xlPasteValues
+    
+
+ActiveSheet.Range("A1").Copy
+x.Close SaveChanges:=True
+y.Close SaveChanges:=True
+
+MsgBox "Task Complete"
+'Reset Macro Optimization Settings
+  Application.ScreenUpdating = True
+  Application.EnableEvents = True
+  Application.Calculation = xlCalculationAutomatic
+
+
+End Sub
