@@ -1,0 +1,42 @@
+Public Sub autofill_Alok()
+'
+' autofill_Alok Macro
+' autofilll for the entire column
+'
+
+'
+    Dim finalrow As Long
+    Dim i As Integer
+    
+    
+    'activate the sheet
+    Sheets("Quantity by Volume").Select
+    
+    'select the last row with data from the entire column
+    finalrow = Cells(Rows.Count, 1).End(xlUp).Row
+    
+    'create a loop with column and row numbers to apply changes to all the required columns
+    For i = 7 To 15
+    
+    'cells from which data is to be copied
+    Cells(3, i).Select
+    
+    'autofill the entire column by specifying the range
+    Selection.AutoFill Destination:=Range(Cells(3, i), Cells(finalrow, i))
+    Next i
+    
+    'select the last row with data from the entire column
+    For i = 7 To 15
+    
+    'select the sheet from the workbook
+    Sheets("Qty by Number of Multipacks").Select
+    
+    'cells from which data is to be copied
+    Cells(3, i).Select
+    
+    'apply autofill changes to the entire range
+    Selection.AutoFill Destination:=Range(Cells(3, i), Cells(finalrow, i))
+    Next i
+    
+
+End Sub
