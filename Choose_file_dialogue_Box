@@ -1,0 +1,31 @@
+'    Strating sub procedure to write VBA Code to Open an Excel File using File Dialog Box
+Sub sbVBA_To_Open_Workbook_FileDialog_C()
+
+'‘Declaring a Variable to hold the file choosen using File DilogBox
+Dim strFileToOpen As String
+
+'‘Choosing an Excel File using File dialog Box and capturing the file path in the variable
+    strFileToOpen = Application.GetOpenFilename _
+        (Title:="Please select an Excel file to open", _
+    FileFilter:="Excel Files *.xls* (*.xls*),")
+
+'‘Here you can note that we have allowed any excel files to choose
+'‘We have also customized the file dialog title
+'
+'‘Checking if file is selected
+ If strFileToOpen = "" Then
+'
+'‘Displaying a message if file not choosedn in the above step
+        MsgBox "No file selected.", vbExclamation, "Sorry!"
+'
+'‘And existing from the procedure
+    Exit Sub
+Else
+
+'‘Openning the file if selected in the above step
+Workbooks.Open Filename:=strFileToOpen
+End If
+    
+'‘Ending the sub procedure
+    
+End Sub
