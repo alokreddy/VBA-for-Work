@@ -1,0 +1,11 @@
+Public Sub find_replace_Alok()
+'
+' find_replace_Alok Macro
+' finds and replaces text from the active worksheet
+
+    
+    Cells.Replace What:="TEXT-TO-BE-REPLACED", Replacement:="REPLACE WITH THIS TEXT", _
+        LookAt:=xlPart, SearchOrder:=xlByRows, MatchCase:=False, SearchFormat:= _
+        False, ReplaceFormat:=False
+        
+End Sub
