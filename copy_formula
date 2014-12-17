@@ -1,0 +1,6 @@
+Sub FORMULA_SHEET2()
+'
+'
+    ActiveCell.FormulaR1C1 = "='(SHEET-NAME_HERE)'!RC"
+
+End Sub
