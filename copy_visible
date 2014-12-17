@@ -1,0 +1,9 @@
+Sub copyvisible()
+'
+' copyvisible Macro
+' copy only the visible cells
+'
+    Range(Selection, Selection.End(xlDown)).Select
+    Selection.SpecialCells(xlCellTypeVisible).Select
+    Selection.Copy
+End Sub
