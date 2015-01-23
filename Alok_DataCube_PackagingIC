@@ -1,0 +1,258 @@
+Sub AlokCubeData()
+
+Dim finalrow As Long
+Dim i As Integer
+Dim j As Integer
+
+    Application.ScreenUpdating = False
+    Application.EnableEvents = False
+    Application.Calculation = xlCalculationManual
+
+
+'Open the "CONSOLIDATED FILE"
+Workbooks.Open ("C:\Users\alokkt\Desktop\Consolidated file.xlsx")
+Sheets("Packaging Consolidated").Activate
+
+'Apply FILTER to COUNTRY and UNITS
+ActiveSheet.Range("B1").AutoFilter field:=2, Criteria1:="UK"
+ActiveSheet.Range("P1").AutoFilter field:=16, Criteria1:="M Items"
+
+'COPY data from IT MODEL CONCATENATION
+ActiveSheet.Range("Q1").Select
+    ActiveCell.Offset(rowOffset:=1, columnOffset:=0).Select
+        Range(Selection, Selection.End(xlDown)).Select
+            Selection.SpecialCells(xlCellTypeVisible).Select
+                Selection.Copy
+    
+
+'OPEN the destination COUNTRY CUBE DATA FILE
+Workbooks.Open ("C:\Users\alokkt\Desktop\United Kingdom (23424975).xlsx")
+
+'Select the PASTE destination for PACKAGE TYPES and PASTE DATA
+Sheets("Quantity by Number of Items").Select
+Range("Y3").Value = 2018
+    Range("A3").Select
+        Selection.PasteSpecial Paste:=xlPasteValues
+        
+        
+'AUTOFILL the PATHCODES for PACKAGE TYPES
+finalrow = Cells(Rows.Count, 1).End(xlUp).Row
+            Range("B3").Select
+                Selection.AutoFill Destination:=Range(Cells(3, 2), Cells(finalrow, 2))
+
+
+
+'COPY PACKAGE MATERIAL data from CONSOLIDATED FILE
+Workbooks("Consolidated file.xlsx").Activate
+    ActiveSheet.Range("G1").Select
+        ActiveCell.Offset(rowOffset:=1, columnOffset:=0).Select
+            Range(Selection, Selection.End(xlDown)).Select
+                Selection.SpecialCells(xlCellTypeVisible).Select
+                    Selection.Copy
+
+
+'Select the PASTE destination for PACKAGE MATERIAL and PASTE DATA
+Workbooks("United Kingdom (23424975).xlsx").Activate
+    Sheets("Quantity by Number of Items").Select
+        Range("C3").Select
+            Selection.PasteSpecial Paste:=xlPasteValues
+            
+
+'COPY CONTAINER TYPE data from CONSOLIDATED FILE
+Workbooks("Consolidated file.xlsx").Activate
+    ActiveSheet.Range("H1").Select
+        ActiveCell.Offset(rowOffset:=1, columnOffset:=0).Select
+            Range(Selection, Selection.End(xlDown)).Select
+                Selection.SpecialCells(xlCellTypeVisible).Select
+                    Selection.Copy
+
+
+'Select the PASTE destination for CONTAINER TYPE and PASTE DATA
+Workbooks("United Kingdom (23424975).xlsx").Activate
+    Sheets("Quantity by Number of Items").Select
+        Range("E3").Select
+            Selection.PasteSpecial Paste:=xlPasteValues
+            
+
+'COPY CLOSURE MATERIAL data from CONSOLIDATED FILE
+Workbooks("Consolidated file.xlsx").Activate
+    ActiveSheet.Range("I1").Select
+        ActiveCell.Offset(rowOffset:=1, columnOffset:=0).Select
+            Range(Selection, Selection.End(xlDown)).Select
+                Selection.SpecialCells(xlCellTypeVisible).Select
+                    Selection.Copy
+
+
+'Select the PASTE destination for CLOSURE MATERIAL and PASTE DATA
+Workbooks("United Kingdom (23424975).xlsx").Activate
+    Sheets("Quantity by Number of Items").Select
+        Range("G3").Select
+            Selection.PasteSpecial Paste:=xlPasteValues
+
+
+'COPY CLOSURE TYPE data from CONSOLIDATED FILE
+Workbooks("Consolidated file.xlsx").Activate
+    ActiveSheet.Range("J1").Select
+        ActiveCell.Offset(rowOffset:=1, columnOffset:=0).Select
+            Range(Selection, Selection.End(xlDown)).Select
+                Selection.SpecialCells(xlCellTypeVisible).Select
+                    Selection.Copy
+
+
+'Select the PASTE destination for CLOSURE TYPE and PASTE DATA
+Workbooks("United Kingdom (23424975).xlsx").Activate
+    Sheets("Quantity by Number of Items").Select
+        Range("I3").Select
+            Selection.PasteSpecial Paste:=xlPasteValues
+
+
+'COPY OUTER MATERIAL data from CONSOLIDATED FILE
+Workbooks("Consolidated file.xlsx").Activate
+    ActiveSheet.Range("K1").Select
+        ActiveCell.Offset(rowOffset:=1, columnOffset:=0).Select
+            Range(Selection, Selection.End(xlDown)).Select
+                Selection.SpecialCells(xlCellTypeVisible).Select
+                    Selection.Copy
+
+
+'Select the PASTE destination for OUTER MATERIAL and PASTE DATA
+Workbooks("United Kingdom (23424975).xlsx").Activate
+    Sheets("Quantity by Number of Items").Select
+        Range("K3").Select
+            Selection.PasteSpecial Paste:=xlPasteValues
+
+
+
+'COPY OUTER TYPE data from CONSOLIDATED FILE
+Workbooks("Consolidated file.xlsx").Activate
+    ActiveSheet.Range("L1").Select
+        ActiveCell.Offset(rowOffset:=1, columnOffset:=0).Select
+            Range(Selection, Selection.End(xlDown)).Select
+                Selection.SpecialCells(xlCellTypeVisible).Select
+                    Selection.Copy
+
+
+'Select the PASTE destination for OUTER TYPE and PASTE DATA
+Workbooks("United Kingdom (23424975).xlsx").Activate
+    Sheets("Quantity by Number of Items").Select
+        Range("M3").Select
+            Selection.PasteSpecial Paste:=xlPasteValues
+
+
+'COPY OUTER MATERIAL data from CONSOLIDATED FILE
+Workbooks("Consolidated file.xlsx").Activate
+    ActiveSheet.Range("M1").Select
+        ActiveCell.Offset(rowOffset:=1, columnOffset:=0).Select
+            Range(Selection, Selection.End(xlDown)).Select
+                Selection.SpecialCells(xlCellTypeVisible).Select
+                    Selection.Copy
+
+
+'Select the PASTE destination for OUTER MATERIAL and PASTE DATA
+Workbooks("United Kingdom (23424975).xlsx").Activate
+    Sheets("Quantity by Number of Items").Select
+        Range("O3").Select
+            Selection.PasteSpecial Paste:=xlPasteValues
+
+
+'AUTOFILL LOOP for country-wise cube data sheets
+For i = 4 To 16 Step 2
+    Cells(3, i).Select
+                Selection.AutoFill Destination:=Range(Cells(3, i), Cells(finalrow, i))
+Next i
+
+For j = 17 To 25
+    Cells(3, j).Select
+                Selection.AutoFill Destination:=Range(Cells(3, j), Cells(finalrow, j))
+Next j
+
+
+'Copy DATA for years from VOLUME
+Workbooks("Consolidated file.xlsx").Activate
+    ActiveSheet.Range("AH1:AT1").Select
+        ActiveCell.Offset(rowOffset:=1, columnOffset:=0).Select
+            Range(Selection, Selection.End(xlDown)).Select
+                Selection.SpecialCells(xlCellTypeVisible).Select
+                    Selection.Copy
+
+
+
+'PASTE DATA for Years FOR ITEMS
+Workbooks("United Kingdom (23424975).xlsx").Activate
+    Sheets("Quantity by Number of Items").Select
+        Range("AL3:AX3").Select
+            Selection.PasteSpecial Paste:=xlPasteValues
+                        
+                        
+                        
+'COPY the descriptive data to the SHEET2
+Workbooks("United Kingdom (23424975).xlsx").Activate
+    Sheets("Quantity by Number of Items").Select
+        ActiveSheet.Range("A3:Y3").Select
+            Range(Selection, Selection.End(xlDown)).Select
+                Selection.SpecialCells(xlCellTypeVisible).Select
+                    Selection.Copy
+                    
+                    
+'PASTE the descriptive data to the SHEET2
+Workbooks("United Kingdom (23424975).xlsx").Activate
+    Sheets("Quantity by Number of Packs").Select
+        Range("A3:Y3").Select
+            Selection.PasteSpecial Paste:=xlPasteValues
+
+
+'Copy DATA for years from VOLUME
+Workbooks("Consolidated file.xlsx").Activate
+    ActiveSheet.Range("AW1:BI1").Select
+        ActiveCell.Offset(rowOffset:=1, columnOffset:=0).Select
+            Range(Selection, Selection.End(xlDown)).Select
+                Selection.SpecialCells(xlCellTypeVisible).Select
+                    Selection.Copy
+
+
+
+'PASTE DATA for Years FOR ITEMS
+Workbooks("United Kingdom (23424975).xlsx").Activate
+    Sheets("Quantity by Number of Packs").Select
+        Range("AL3:AX3").Select
+            Selection.PasteSpecial Paste:=xlPasteValues
+                        
+
+Application.ScreenUpdating = True
+Application.EnableEvents = True
+Application.Calculation = xlCalculationAutomatic
+
+End Sub
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
