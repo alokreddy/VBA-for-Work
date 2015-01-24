@@ -3,38 +3,85 @@ Sub AlokCubeData()
 Dim finalrow As Long
 Dim i As Integer
 Dim j As Integer
+Dim ConsolidatedFilePath As String
+Dim FldrPicker As FileDialog
+Dim MyPath As String
+Dim folderName As String
+Dim myFolder As String
+Dim MyFile As String
+Dim myExtension As String
+Dim CountryCriteria As String
+Dim ConsolidatedFile As Workbook
+Dim wb As Workbook
 
     Application.ScreenUpdating = False
     Application.EnableEvents = False
     Application.Calculation = xlCalculationManual
 
 
+ConsolidatedFilePath = Application.GetOpenFilename _
+        (Title:="Please select the Consolidated Excel file to open", _
+    FileFilter:="Excel Files *.xls* (*.xls*),")
+
 'Open the "CONSOLIDATED FILE"
-Workbooks.Open ("C:\Users\alokkt\Desktop\Consolidated file.xlsx")
-Sheets("Packaging Consolidated").Activate
+Set ConsolidatedFile = Workbooks.Open(FileName:=ConsolidatedFilePath)
+        ConsolidatedFile.Sheets("Packaging Consolidated").Activate
 
+
+
+'Retrieve Target Folder Path From User
+  Set FldrPicker = Application.FileDialog(msoFileDialogFolderPicker)
+
+    With FldrPicker
+      .Title = "Select A Target Folder"
+      .AllowMultiSelect = False
+        If .Show <> -1 Then GoTo NextCode
+        MyPath = .SelectedItems(1) & "\"
+    End With
+
+'In Case of Cancel
+NextCode:
+  MyPath = MyPath
+  If MyPath = "" Then Exit Sub
+
+'Target File Extension (must include wildcard "*")
+  myExtension = "*.xls"
+
+'Target Path with Ending Extention
+  MyFile = Dir(MyPath & myExtension)
+
+
+
+'Loop through each Excel file in folder
+  Do While MyFile <> ""
+    'Set variable equal to opened workbook
+      Set wb = Workbooks.Open(FileName:=MyPath & MyFile)
+      
+       CountryCriteria = ActiveWorkbook.FullName
+       
+ConsolidatedFile.Sheets("Packaging Consolidated").Activate
 'Apply FILTER to COUNTRY and UNITS
-ActiveSheet.Range("B1").AutoFilter field:=2, Criteria1:="UK"
-ActiveSheet.Range("P1").AutoFilter field:=16, Criteria1:="M Items"
+ActiveSheet.Range("BN1").AutoFilter field:=62, Criteria1:=CountryCriteria
+'ActiveSheet.Range("P1").AutoFilter field:=16, Criteria1:="M Items"
+'End If
 
+
+ConsolidatedFile.Sheets("Packaging Consolidated").Activate
 'COPY data from IT MODEL CONCATENATION
 ActiveSheet.Range("Q1").Select
     ActiveCell.Offset(rowOffset:=1, columnOffset:=0).Select
         Range(Selection, Selection.End(xlDown)).Select
             Selection.SpecialCells(xlCellTypeVisible).Select
                 Selection.Copy
-    
 
-'OPEN the destination COUNTRY CUBE DATA FILE
-Workbooks.Open ("C:\Users\alokkt\Desktop\United Kingdom (23424975).xlsx")
 
-'Select the PASTE destination for PACKAGE TYPES and PASTE DATA
-Sheets("Quantity by Number of Items").Select
+'Select the PASTE DESTINATION (COUNTRY FILE) for PACKAGE TYPES and PASTE DATA
+wb.wb.Sheets("Quantity by Number of Items").Select
 Range("Y3").Value = 2018
     Range("A3").Select
         Selection.PasteSpecial Paste:=xlPasteValues
-        
-        
+
+
 'AUTOFILL the PATHCODES for PACKAGE TYPES
 finalrow = Cells(Rows.Count, 1).End(xlUp).Row
             Range("B3").Select
@@ -43,7 +90,7 @@ finalrow = Cells(Rows.Count, 1).End(xlUp).Row
 
 
 'COPY PACKAGE MATERIAL data from CONSOLIDATED FILE
-Workbooks("Consolidated file.xlsx").Activate
+ConsolidatedFile.Sheets("Packaging Consolidated").Activate
     ActiveSheet.Range("G1").Select
         ActiveCell.Offset(rowOffset:=1, columnOffset:=0).Select
             Range(Selection, Selection.End(xlDown)).Select
@@ -52,14 +99,14 @@ Workbooks("Consolidated file.xlsx").Activate
 
 
 'Select the PASTE destination for PACKAGE MATERIAL and PASTE DATA
-Workbooks("United Kingdom (23424975).xlsx").Activate
-    Sheets("Quantity by Number of Items").Select
+
+    wb.wb.Sheets("Quantity by Number of Items").Select
         Range("C3").Select
             Selection.PasteSpecial Paste:=xlPasteValues
-            
+
 
 'COPY CONTAINER TYPE data from CONSOLIDATED FILE
-Workbooks("Consolidated file.xlsx").Activate
+ConsolidatedFile.Sheets("Packaging Consolidated").Activate
     ActiveSheet.Range("H1").Select
         ActiveCell.Offset(rowOffset:=1, columnOffset:=0).Select
             Range(Selection, Selection.End(xlDown)).Select
@@ -68,14 +115,14 @@ Workbooks("Consolidated file.xlsx").Activate
 
 
 'Select the PASTE destination for CONTAINER TYPE and PASTE DATA
-Workbooks("United Kingdom (23424975).xlsx").Activate
-    Sheets("Quantity by Number of Items").Select
+
+    wb.Sheets("Quantity by Number of Items").Select
         Range("E3").Select
             Selection.PasteSpecial Paste:=xlPasteValues
-            
+
 
 'COPY CLOSURE MATERIAL data from CONSOLIDATED FILE
-Workbooks("Consolidated file.xlsx").Activate
+ConsolidatedFile.Sheets("Packaging Consolidated").Activate
     ActiveSheet.Range("I1").Select
         ActiveCell.Offset(rowOffset:=1, columnOffset:=0).Select
             Range(Selection, Selection.End(xlDown)).Select
@@ -84,14 +131,14 @@ Workbooks("Consolidated file.xlsx").Activate
 
 
 'Select the PASTE destination for CLOSURE MATERIAL and PASTE DATA
-Workbooks("United Kingdom (23424975).xlsx").Activate
-    Sheets("Quantity by Number of Items").Select
+
+    wb.Sheets("Quantity by Number of Items").Select
         Range("G3").Select
             Selection.PasteSpecial Paste:=xlPasteValues
 
 
 'COPY CLOSURE TYPE data from CONSOLIDATED FILE
-Workbooks("Consolidated file.xlsx").Activate
+ConsolidatedFile.Sheets("Packaging Consolidated").Activate
     ActiveSheet.Range("J1").Select
         ActiveCell.Offset(rowOffset:=1, columnOffset:=0).Select
             Range(Selection, Selection.End(xlDown)).Select
@@ -100,14 +147,14 @@ Workbooks("Consolidated file.xlsx").Activate
 
 
 'Select the PASTE destination for CLOSURE TYPE and PASTE DATA
-Workbooks("United Kingdom (23424975).xlsx").Activate
-    Sheets("Quantity by Number of Items").Select
+
+    wb.Sheets("Quantity by Number of Items").Select
         Range("I3").Select
             Selection.PasteSpecial Paste:=xlPasteValues
 
 
 'COPY OUTER MATERIAL data from CONSOLIDATED FILE
-Workbooks("Consolidated file.xlsx").Activate
+ConsolidatedFile.Sheets("Packaging Consolidated").Activate
     ActiveSheet.Range("K1").Select
         ActiveCell.Offset(rowOffset:=1, columnOffset:=0).Select
             Range(Selection, Selection.End(xlDown)).Select
@@ -116,15 +163,15 @@ Workbooks("Consolidated file.xlsx").Activate
 
 
 'Select the PASTE destination for OUTER MATERIAL and PASTE DATA
-Workbooks("United Kingdom (23424975).xlsx").Activate
-    Sheets("Quantity by Number of Items").Select
+
+    wb.Sheets("Quantity by Number of Items").Select
         Range("K3").Select
             Selection.PasteSpecial Paste:=xlPasteValues
 
 
 
 'COPY OUTER TYPE data from CONSOLIDATED FILE
-Workbooks("Consolidated file.xlsx").Activate
+ConsolidatedFile.Sheets("Packaging Consolidated").Activate
     ActiveSheet.Range("L1").Select
         ActiveCell.Offset(rowOffset:=1, columnOffset:=0).Select
             Range(Selection, Selection.End(xlDown)).Select
@@ -133,14 +180,14 @@ Workbooks("Consolidated file.xlsx").Activate
 
 
 'Select the PASTE destination for OUTER TYPE and PASTE DATA
-Workbooks("United Kingdom (23424975).xlsx").Activate
-    Sheets("Quantity by Number of Items").Select
+
+    wb.Sheets("Quantity by Number of Items").Select
         Range("M3").Select
             Selection.PasteSpecial Paste:=xlPasteValues
 
 
 'COPY OUTER MATERIAL data from CONSOLIDATED FILE
-Workbooks("Consolidated file.xlsx").Activate
+ConsolidatedFile.Sheets("Packaging Consolidated").Activate
     ActiveSheet.Range("M1").Select
         ActiveCell.Offset(rowOffset:=1, columnOffset:=0).Select
             Range(Selection, Selection.End(xlDown)).Select
@@ -149,8 +196,8 @@ Workbooks("Consolidated file.xlsx").Activate
 
 
 'Select the PASTE destination for OUTER MATERIAL and PASTE DATA
-Workbooks("United Kingdom (23424975).xlsx").Activate
-    Sheets("Quantity by Number of Items").Select
+
+    wb.Sheets("Quantity by Number of Items").Select
         Range("O3").Select
             Selection.PasteSpecial Paste:=xlPasteValues
 
@@ -168,7 +215,7 @@ Next j
 
 
 'Copy DATA for years from VOLUME
-Workbooks("Consolidated file.xlsx").Activate
+ConsolidatedFile.Sheets("Packaging Consolidated").Activate
     ActiveSheet.Range("AH1:AT1").Select
         ActiveCell.Offset(rowOffset:=1, columnOffset:=0).Select
             Range(Selection, Selection.End(xlDown)).Select
@@ -178,31 +225,31 @@ Workbooks("Consolidated file.xlsx").Activate
 
 
 'PASTE DATA for Years FOR ITEMS
-Workbooks("United Kingdom (23424975).xlsx").Activate
-    Sheets("Quantity by Number of Items").Select
+
+    wb.Sheets("Quantity by Number of Items").Select
         Range("AL3:AX3").Select
             Selection.PasteSpecial Paste:=xlPasteValues
-                        
-                        
-                        
+
+
+
 'COPY the descriptive data to the SHEET2
-Workbooks("United Kingdom (23424975).xlsx").Activate
-    Sheets("Quantity by Number of Items").Select
+
+    wb.Sheets("Quantity by Number of Items").Select
         ActiveSheet.Range("A3:Y3").Select
             Range(Selection, Selection.End(xlDown)).Select
                 Selection.SpecialCells(xlCellTypeVisible).Select
                     Selection.Copy
-                    
-                    
+
+
 'PASTE the descriptive data to the SHEET2
-Workbooks("United Kingdom (23424975).xlsx").Activate
-    Sheets("Quantity by Number of Packs").Select
+
+    wb.Sheets("Quantity by Number of Packs").Select
         Range("A3:Y3").Select
             Selection.PasteSpecial Paste:=xlPasteValues
 
 
 'Copy DATA for years from VOLUME
-Workbooks("Consolidated file.xlsx").Activate
+ConsolidatedFile.Sheets("Packaging Consolidated").Activate
     ActiveSheet.Range("AW1:BI1").Select
         ActiveCell.Offset(rowOffset:=1, columnOffset:=0).Select
             Range(Selection, Selection.End(xlDown)).Select
@@ -210,28 +257,27 @@ Workbooks("Consolidated file.xlsx").Activate
                     Selection.Copy
 
 
-
 'PASTE DATA for Years FOR ITEMS
-Workbooks("United Kingdom (23424975).xlsx").Activate
-    Sheets("Quantity by Number of Packs").Select
+
+    wb.Sheets("Quantity by Number of Packs").Select
         Range("AL3:AX3").Select
             Selection.PasteSpecial Paste:=xlPasteValues
-                        
+
+'Save and Close Workbook
+      wb.Close SaveChanges:=True
+
+    'Get next file name
+      MyFile = Dir
+  Loop
+
+'Message Box when tasks are completed
+  MsgBox "Task Complete!"
 
 Application.ScreenUpdating = True
 Application.EnableEvents = True
 Application.Calculation = xlCalculationAutomatic
 
 End Sub
-
-
-
-
-
-
-
-
-
 
 
 
