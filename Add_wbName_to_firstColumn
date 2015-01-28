@@ -1,0 +1,20 @@
+Sub Add_wbName_FirstColumn()
+
+    Dim wb As Workbook
+    Dim x As String
+    Dim finalrow As Long
+    
+    Set wb = ActiveWorkbook
+    
+    x = wb.Name
+        Sheets(1).Range("A2").Value = x
+        
+        Sheets(1).Range("B2").Select
+        
+    finalrow = Selection.End(xlDown).Row
+        Range("A2").Select
+            Selection.AutoFill Destination:=Range(Cells(2, 1), Cells(finalrow, 1))
+             
+    
+End Sub
+
