@@ -1,0 +1,102 @@
+'All the charts in the active worksheet will be changed to auto format on calling this macro from the activesheet.
+
+Sub AutoChartAxis()
+'
+' Macro for the chart axis to be set to auto axis (major, minor, minimum maximum). the macro works for the charts with two veritcal axis:
+'a primary axis and a secondary axis. Makes changes to all the charts on the current sheet.
+'
+Dim Wb As Workbook
+Dim Ws As Worksheet
+Dim Cht As ChartObject
+
+Set Wb = ActiveWorkbook
+Set Ws = Wb.ActiveSheet
+
+For Each Cht In Ws.ChartObjects
+Cht.Activate
+    With ActiveChart.Axes(xlValue, xlPrimary)
+        .MaximumScaleIsAuto = True
+        .MinimumScaleIsAuto = True
+        .MajorUnitIsAuto = True
+        .MinorUnitIsAuto = True
+    End With
+    With ActiveChart.Axes(xlValue, xlSecondary)
+        .MaximumScaleIsAuto = True
+        .MinimumScaleIsAuto = True
+        .MajorUnitIsAuto = True
+        .MinorUnitIsAuto = True
+    End With
+Next Cht
+
+End Sub
+
+
+Public Sub ChartAutoAxis()
+'this changes the major, minor, min and max axis parameteres to auto in excel for the active chart. 
+'The chart in this case has two vertical axis: a primary and a secondary. 
+
+    ActiveChart.Axes(xlValue).Select
+    ActiveChart.Axes(xlValue).MinimumScaleIsAuto = True
+    ActiveChart.Axes(xlValue).MaximumScaleIsAuto = True
+    With ActiveChart.Axes(xlValue)
+        .MajorUnitIsAuto = True
+        .MinorUnitIsAuto = True
+        .DisplayUnit = xlNone
+    End With
+    ActiveChart.Axes(xlValue, xlSecondary).Select
+    With ActiveChart.Axes(xlValue, xlSecondary)
+        .MajorUnitIsAuto = True
+        .MinorUnitIsAuto = True
+        .DisplayUnit = xlNone
+    End With
+    
+End Sub
+
+Sub LoopSheetCharts()
+    
+Dim cht As ChartObject
+Dim Wb As Workbook
+Dim Ws As Worksheet
+
+Application.ScreenUpdating = False
+Application.EnableEvents = False
+    
+
+Set Ws = ActiveWorkbook.ActiveSheet
+
+    For Each cht In Ws.ChartObjects
+        cht.Activate
+            Call ChartAutoAxis
+    Next cht
+        
+
+Application.ScreenUpdating = True
+Application.EnableEvents = True
+
+End Sub
+
+
+Sub ColorPies()
+
+'the pie chart's colors will be of the same as the data source range cell color.
+
+    Dim cht As ChartObject
+    Dim i As Integer
+    Dim vntValues As Variant
+    Dim s As String
+    Dim myseries As Series
+ 
+    For Each cht In ActiveSheet.ChartObjects
+        For Each myseries In cht.Chart.SeriesCollection
+ 
+            If myseries.ChartType <> xlPie Then GoTo SkipNotPie
+            s = Split(myseries.Formula, ",")(2)
+            vntValues = myseries.Values
+           
+            For i = 1 To UBound(vntValues)
+                myseries.Points(i).Interior.Color = Range(s).Cells(i).Interior.Color
+            Next i
+SkipNotPie:
+        Next myseries
+    Next cht
+End Sub
