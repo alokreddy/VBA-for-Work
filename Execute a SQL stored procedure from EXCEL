@@ -1,0 +1,8 @@
+Sub RefreshQuery()
+ 
+    With ActiveWorkbook.Connections("MYSERVER").OLEDBConnection
+        .CommandText = "EXECUTE dbo.Tng_Market_Feed '" & Range("B2").Value & "'"
+    End With
+    ActiveWorkbook.Connections("MYSERVER").Refresh
+   
+End Sub
