@@ -1,0 +1,48 @@
+Sub Sort_CPG()
+
+'The code helps to sort the data from a two column range on the values of the second column's
+'values the code is dynamic and it will recognise the range selected and give out the values
+
+ Dim selRange As Range
+ Dim wks As Worksheet
+ Dim keyRange As Range
+ 
+Set selRange = Selection
+
+Set keyRange = selRange.Offset(1, 1).Resize(selRange.Rows.Count - 1, selRange.Columns.Count - 1)
+
+    ActiveWorkbook.Worksheets("Cat CS").Sort.SortFields.Clear
+    ActiveWorkbook.Worksheets("Cat CS").Sort.SortFields.Add Key:=Range(keyRange.Address) _
+        , SortOn:=xlSortOnValues, Order:=xlDescending, DataOption:=xlSortNormal
+    With ActiveWorkbook.Worksheets("Cat CS").Sort
+        .SetRange Range(selRange.Address)
+        .Header = xlYes
+        .MatchCase = False
+        .Orientation = xlTopToBottom
+        .SortMethod = xlPinYin
+        .Apply
+    End With
+    
+End Sub
+
+
+
+
+
+Sub Cht_Height2_Width4()
+'
+' set the height and width of all the charts in the worksheet to 2 and 4 respectively
+'
+Dim ws As Worksheet
+Dim cht As ChartObject
+
+Set ws = ActiveWorkbook.ActiveSheet
+
+For Each cht In ws.ChartObjects
+With cht
+    .Height = 144
+    .Width = 324
+End With
+Next cht
+
+End Sub
