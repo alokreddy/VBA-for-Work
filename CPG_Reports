@@ -1,10 +1,12 @@
-Sub PPTReportForCPG()
+Sub PPTReportCPG()
 
 
 Dim PPApp As PowerPoint.Application
 Dim PPPres As PowerPoint.Presentation
 Dim PPSlide As PowerPoint.Slide
 
+Dim Slide46 As Worksheet
+Dim BubbleCht As Worksheet
 Dim ValVol As Worksheet
 Dim wsCatLC As Worksheet
 Dim wsCatUSD As Worksheet
@@ -48,8 +50,10 @@ ActiveWorkbook.Sheets("Economic Indicators").ChartObjects("GDP Per Capita").Acti
 ActiveChart.ChartArea.Copy
 With PPPres.Slides(4)
     .Shapes.Paste
-    .Shapes("GDP Per Capita").Left = 20 '1st quadrant Left
-    .Shapes("GDP Per Capita").Top = 125 '1st quadrant Top
+    With .Shapes("GDP Per Capita")
+        .Left = 20 '1st quadrant Left
+        .Top = 125 '1st quadrant Top
+    End With
 End With
 
 
@@ -60,8 +64,10 @@ ActiveWorkbook.Sheets("Economic Indicators").ChartObjects("Population").Activate
 ActiveChart.ChartArea.Copy
 With PPPres.Slides(4)
     .Shapes.Paste
-    .Shapes("Population").Left = 360 '2nd quadrant Left
-    .Shapes("Population").Top = 125 '2nd quadrant Top
+    With .Shapes("Population")
+        .Left = 360 '2nd quadrant Left
+        .Top = 125 '2nd quadrant Top
+    End With
 End With
 
 
@@ -72,19 +78,43 @@ ActiveWorkbook.Sheets("Economic Indicators").ChartObjects("Consumer Price Index"
 ActiveChart.ChartArea.Copy
 With PPPres.Slides(4)
     .Shapes.Paste
-    .Shapes("Consumer Price Index").Left = 20 '2nd quadrant Left
-    .Shapes("Consumer Price Index").Top = 325 '2nd quadrant Top
+    With .Shapes("Consumer Price Index")
+        .Left = 20 '2nd quadrant Left
+        .Top = 325 '2nd quadrant Top
+    End With
 End With
 
 'Slide: 6
 'Chart: 1 (Market Volume of the Market)
+Set Slide46 = ActiveWorkbook.Sheets("Slide 4,6")
 ActiveWorkbook.Sheets("Slide 4,6").ChartObjects("Market Volume of the Market").Activate
 ActiveChart.ChartArea.Copy
 With PPPres.Slides(6)
     .Shapes.Paste
-    .Shapes("Market Volume of the Market").Left = 380 '2nd quadrant Left
-    .Shapes("Market Volume of the Market").Top = 255 '2nd quadrant Top
+    With .Shapes("Market Volume of the Market")
+        .Left = 380 '2nd quadrant Left
+        .Top = 255 '2nd quadrant Top
+    End With
 End With
+
+'Slide: 6
+'Table: 1 (Market Value Table)
+For i = 1 To 6
+For j = 1 To 3
+With PPPres.Slides(6)
+    .Shapes("Market Value Table").Table.Cell(i, j).Shape.TextFrame.TextRange.Text = Slide46.Cells(i + 2, j + 1).Text
+End With
+Next j
+Next i
+
+'Slide: 6
+'Table: 2 (Market Volume CAGR Table)
+For i = 1 To 2
+With PPPres.Slides(6)
+    .Shapes("Market Volume CAGR Table").Table.Cell(i, 2).Shape.TextFrame.TextRange.Text = Slide46.Cells(i + 14, 3).Text
+End With
+Next i
+
 
 'Slide: 7
 'Chart: 1 - Line Chart(Market Value and Volume Growth of the Prepared Meals Market)
@@ -92,8 +122,10 @@ ActiveWorkbook.Sheets("Line Chart").ChartObjects("Line Chart").Activate
 ActiveChart.ChartArea.Copy
 With PPPres.Slides(7)
     .Shapes.Paste
-    .Shapes("Line Chart").Left = 40 '2nd quadrant Left
-    .Shapes("Line Chart").Top = 210 '2nd quadrant Top
+    With .Shapes("Line Chart")
+        .Left = 40 '2nd quadrant Left
+        .Top = 210 '2nd quadrant Top
+    End With
 End With
 
 'Slide: 8
@@ -102,19 +134,34 @@ ActiveWorkbook.Sheets("Waterfall chart").ChartObjects("Water Fall").Activate
 ActiveChart.ChartArea.Copy
 With PPPres.Slides(8)
     .Shapes.Paste
-    .Shapes("Water Fall").Left = 40
-    .Shapes("Water Fall").Top = 210
+    With .Shapes("Water Fall")
+        .Left = 40
+        .Top = 210
+    End With
 End With
 
 'Slide: 9
 'Chart: 1 - Market Volume Pie Chart
-ActiveWorkbook.Sheets("Bubble Chart - Categories").ChartObjects("Market Volume Chart").Activate
+Set BubbleCht = ActiveWorkbook.Sheets("Bubble Chart - Categories")
+BubbleCht.ChartObjects("Market Volume Chart").Activate
 ActiveChart.ChartArea.Copy
 With PPPres.Slides(9)
     .Shapes.Paste
-    .Shapes("Market Volume Chart").Left = 30
-    .Shapes("Market Volume Chart").Top = 150
+    With .Shapes("Market Volume Chart")
+        .Left = 30
+        .Top = 150
+    End With
 End With
+
+'Slide: 9
+'Table: 1 (Market Volume Table)
+For i = 1 To 3
+For j = 1 To 3
+With ActivePresentation.Slides(9)
+    .Shapes("Market Volume Table").Table.Cell(i + 1, j + 1).Shape.TextFrame.TextRange.Text = BubbleCht.Cells(i + 41, j + 5).Text
+End With
+Next j
+Next i
 
 'Slide: 10
 'Chart: 1 - Market Value CAGR & Category Size Chart
@@ -122,8 +169,10 @@ ActiveWorkbook.Sheets("Bubble Chart - Categories").ChartObjects("Market Value Ch
 ActiveChart.ChartArea.Copy
 With PPPres.Slides(10)
     .Shapes.Paste
-    .Shapes("Market Value Chart").Left = 40
-    .Shapes("Market Value Chart").Top = 210
+    With .Shapes("Market Value Chart")
+        .Left = 40
+        .Top = 210
+    End With
 End With
 
 'Slide: 11
@@ -133,8 +182,10 @@ wsCatUSD.ChartObjects(CatName.Value & " USD Chart").Activate
 ActiveChart.ChartArea.Copy
 With PPPres.Slides(11)
     .Shapes.Paste
-    .Shapes(CatName.Value & " USD Chart").Left = 20 '1st quadrant Left
-    .Shapes(CatName.Value & " USD Chart").Top = 110 '1st quadrant Top
+    With .Shapes(CatName.Value & " USD Chart")
+        .Left = 20 '1st quadrant Left
+        .Top = 110 '1st quadrant Top
+    End With
 End With
 
 'Slide: 11
@@ -143,8 +194,10 @@ wsCatLC.ChartObjects(CatName.Value & " LC Chart").Activate
 ActiveChart.ChartArea.Copy
 With PPPres.Slides(11)
     .Shapes.Paste
-    .Shapes(CatName.Value & " LC Chart").Left = 360 '1st quadrant Left
-    .Shapes(CatName.Value & " LC Chart").Top = 110 '1st quadrant Top
+    With .Shapes(CatName.Value & " LC Chart")
+        .Left = 360 '1st quadrant Left
+        .Top = 110 '1st quadrant Top
+    End With
 End With
 
 'Slide: 11
@@ -154,8 +207,10 @@ wsCatUSD.ChartObjects(CatName.Value & " USD Chart").Activate
 ActiveChart.ChartArea.Copy
 With PPPres.Slides(11)
     .Shapes.Paste
-    .Shapes(CatName.Value & " USD Chart").Left = 20 '1st quadrant Left
-    .Shapes(CatName.Value & " USD Chart").Top = 310 '1st quadrant Top
+    With .Shapes(CatName.Value & " USD Chart")
+        .Left = 20 '1st quadrant Left
+        .Top = 310 '1st quadrant Top
+    End With
 End With
 
 'Slide: 11
@@ -164,8 +219,10 @@ wsCatLC.ChartObjects(CatName.Value & " LC Chart").Activate
 ActiveChart.ChartArea.Copy
 With PPPres.Slides(11)
     .Shapes.Paste
-    .Shapes(CatName.Value & " LC Chart").Left = 360 '1st quadrant Left
-    .Shapes(CatName.Value & " LC Chart").Top = 310 '1st quadrant Top
+    With .Shapes(CatName.Value & " LC Chart")
+        .Left = 360 '1st quadrant Left
+        .Top = 310 '1st quadrant Top
+    End With
 End With
 
 'Slide: 12
@@ -175,8 +232,10 @@ wsCatUSD.ChartObjects(CatName.Value & " USD Chart").Activate
 ActiveChart.ChartArea.Copy
 With PPPres.Slides(12)
     .Shapes.Paste
-    .Shapes(CatName.Value & " USD Chart").Left = 20 '1st quadrant Left
-    .Shapes(CatName.Value & " USD Chart").Top = 110 '1st quadrant Top
+    With .Shapes(CatName.Value & " USD Chart")
+        .Left = 20 '1st quadrant Left
+        .Top = 110 '1st quadrant Top
+    End With
 End With
 
 'Slide: 12
@@ -185,8 +244,10 @@ wsCatLC.ChartObjects(CatName.Value & " LC Chart").Activate
 ActiveChart.ChartArea.Copy
 With PPPres.Slides(12)
     .Shapes.Paste
-    .Shapes(CatName.Value & " LC Chart").Left = 360 '1st quadrant Left
-    .Shapes(CatName.Value & " LC Chart").Top = 110 '1st quadrant Top
+    With .Shapes(CatName.Value & " LC Chart")
+        .Left = 360 '1st quadrant Left
+        .Top = 110 '1st quadrant Top
+    End With
 End With
 
 'Slide: 14
@@ -206,8 +267,10 @@ ActiveWorkbook.Sheets("Distribution Charts").ChartObjects("Food Distribution Cha
 ActiveChart.ChartArea.Copy
 With PPPres.Slides(18)
     .Shapes.Paste
-    .Shapes("Food Distribution Chart").Left = 30
-    .Shapes("Food Distribution Chart").Top = 130
+    With .Shapes("Food Distribution Chart")
+        .Left = 30
+        .Top = 130
+    End With
 End With
 
 'Slide: 18
@@ -216,8 +279,10 @@ ActiveWorkbook.Sheets("Distribution Charts").ChartObjects("Market Distribution C
 ActiveChart.ChartArea.Copy
 With PPPres.Slides(18)
     .Shapes.Paste
-    .Shapes("Market Distribution Chart").Left = 370
-    .Shapes("Market Distribution Chart").Top = 130
+    With .Shapes("Market Distribution Chart")
+        .Left = 370
+        .Top = 130
+    End With
 End With
 
 
@@ -228,8 +293,10 @@ ActiveWorkbook.Sheets("Distri Pivot").ChartObjects(CatName.Value & " D Chart").A
 ActiveChart.ChartArea.Copy
 With PPPres.Slides(19)
     .Shapes.Paste
-    .Shapes(CatName.Value & " D Chart").Left = 30
-    .Shapes(CatName.Value & " D Chart").Top = 130
+    With .Shapes(CatName.Value & " D Chart")
+        .Left = 30
+        .Top = 130
+    End With
     .Shapes("Category 1").Table.Cell(1, 1).Shape.TextFrame.TextRange.Text = "Key distribution channels – " & CatName.Value
 End With
 
@@ -240,8 +307,10 @@ ActiveWorkbook.Sheets("Distri Pivot").ChartObjects(CatName.Value & " D Chart").A
 ActiveChart.ChartArea.Copy
 With PPPres.Slides(19)
     .Shapes.Paste
-    .Shapes(CatName.Value & " D Chart").Left = 380
-    .Shapes(CatName.Value & " D Chart").Top = 130
+    With .Shapes(CatName.Value & " D Chart")
+        .Left = 380
+        .Top = 130
+    End With
     .Shapes("Category 2").Table.Cell(1, 1).Shape.TextFrame.TextRange.Text = "Key distribution channels – " & CatName.Value
 End With
 
@@ -252,8 +321,10 @@ ActiveWorkbook.Sheets("Distri Pivot").ChartObjects(CatName.Value & " D Chart").A
 ActiveChart.ChartArea.Copy
 With PPPres.Slides(19)
     .Shapes.Paste
-    .Shapes(CatName.Value & " D Chart").Left = 30
-    .Shapes(CatName.Value & " D Chart").Top = 330
+    With .Shapes(CatName.Value & " D Chart")
+        .Left = 30
+        .Top = 330
+    End With
     .Shapes("Category 3").Table.Cell(1, 1).Shape.TextFrame.TextRange.Text = "Key distribution channels – " & CatName.Value
 End With
 
@@ -264,8 +335,10 @@ ActiveWorkbook.Sheets("Category Wise Brand Share").ChartObjects(CatName.Value & 
 ActiveChart.ChartArea.Copy
 With PPPres.Slides(25)
     .Shapes.Paste
-    .Shapes(CatName.Value & " B Chart").Left = 30
-    .Shapes(CatName.Value & " B Chart").Top = 130
+    With .Shapes(CatName.Value & " B Chart")
+        .Left = 30
+        .Top = 130
+    End With
     .Shapes("Category 1").TextFrame.TextRange.Text = CatName.Value & " - Brand share"
 End With
 
@@ -276,8 +349,10 @@ ActiveWorkbook.Sheets("Category Wise Brand Share").ChartObjects(CatName.Value & 
 ActiveChart.ChartArea.Copy
 With PPPres.Slides(25)
     .Shapes.Paste
-    .Shapes(CatName.Value & " B Chart").Left = 380
-    .Shapes(CatName.Value & " B Chart").Top = 130
+    With .Shapes(CatName.Value & " B Chart")
+        .Left = 380
+        .Top = 130
+    End With
     .Shapes("Category 1").TextFrame.TextRange.Text = CatName.Value & " - Brand share"
 End With
 
@@ -288,8 +363,10 @@ ActiveWorkbook.Sheets("Category Wise Brand Share").ChartObjects(CatName.Value & 
 ActiveChart.ChartArea.Copy
 With PPPres.Slides(25)
     .Shapes.Paste
-    .Shapes(CatName.Value & " B Chart").Left = 30
-    .Shapes(CatName.Value & " B Chart").Top = 330
+    With .Shapes(CatName.Value & " B Chart")
+        .Left = 30
+        .Top = 330
+    End With
     .Shapes("Category 1").TextFrame.TextRange.Text = CatName.Value & " - Brand share"
 End With
 
