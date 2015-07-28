@@ -1,0 +1,22 @@
+Sub tables()
+
+
+For Each t In ActiveDocument.tables
+With t.Range
+.Select
+Selection.ParagraphFormat.Alignment = wdAlignParagraphCenter
+.Cells.VerticalAlignment = wdCellAlignVerticalCenter
+Selection.Font.Name = "Arial"
+Selection.Font.Size = 8
+End With
+Next
+
+On Error Resume Next
+For Each t In ActiveDocument.tables
+With t.Range.Rows(1).Select
+Selection.Font.Name = "Arial (Headings)"
+Selection.Font.Size = 10
+End With
+Next
+
+End Sub
