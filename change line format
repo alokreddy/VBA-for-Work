@@ -1,0 +1,27 @@
+Sub ReplaceLinesStartWith()
+
+Dim startingWord As String
+'the string to search for
+startingWord = "Source:"
+
+Dim myRange As Range
+'Will change selection to the document start
+Set myRange = ActiveDocument.Range(ActiveDocument.Range.Start, ActiveDocument.Range.Start)
+myRange.Select
+
+While Selection.End < ActiveDocument.Range.End
+   If Left(Selection.Text, Len(startingWord)) = startingWord Then
+        With Selection.Font
+            .Bold = False
+            .Italic = False
+            .Size = 8
+        End With
+    End If
+
+    Selection.MoveDown Unit:=wdLine
+    Selection.Expand wdLine
+
+Wend
+
+MsgBox "Done!"
+End Sub
