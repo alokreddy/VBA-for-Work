@@ -1,0 +1,66 @@
+Sub GetRandom()
+    
+    Dim iRows As Integer
+    Dim iCols As Integer
+    Dim iBegRow As Integer
+    Dim iBegCol As Integer
+    Dim J As Integer
+    Dim rCells As Range
+    Dim finalrow As Long
+    Dim iWantRow As Long
+    
+    finalrow = Range("A" & Rows.Count).End(xlUp).Row
+    ActiveSheet.Range("A2:A" & finalrow).Select
+    
+    iRows = Selection.Rows.Count
+    iCols = Selection.Columns.Count
+    iBegRow = Selection.Row
+    iBegCol = Selection.Column
+    
+    i = 1
+    
+Do While i < 6
+            iWantRow = Int(Rnd() * iRows)
+        Range("A" & iWantRow).Interior.Color = vbYellow
+        MsgBox Range("A" & iWantRow).Value
+        i = i + 1
+Loop
+    
+MsgBox "Ooops!!! That's all there is for NOW!"
+    
+    
+End Sub
+
+Sub GetRandom20()
+    
+    Dim iRows As Integer
+    Dim iCols As Integer
+    Dim iBegRow As Integer
+    Dim iBegCol As Integer
+    Dim J As Integer
+    Dim rCells As Range
+    Dim finalrow As Long
+    Dim iWantRow As Long
+    
+    finalrow = Range("A" & Rows.Count).End(xlUp).Row
+    ActiveSheet.Range("A2:A" & finalrow).Select
+    
+    iRows = Selection.Rows.Count
+    iCols = Selection.Columns.Count
+    iBegRow = Selection.Row
+    iBegCol = Selection.Column
+    
+    i = 1
+    
+Do While i < 20
+            iWantRow = Int(Rnd() * iRows)
+        Range("A" & iWantRow).Interior.Color = vbYellow
+        MsgBox Range("A" & iWantRow).Value
+        i = i + 1
+Loop
+    
+MsgBox "Ooops!!! That's all there is for NOW!"
+    
+    
+End Sub
+
