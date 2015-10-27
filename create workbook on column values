@@ -1,0 +1,57 @@
+Sub VT_OriginalFile()
+
+    With Application
+        .ScreenUpdating = False
+        .EnableEvents = False
+        .Calculation = xlCalculationManual
+    End With
+
+        Dim arr As New Collection, a
+        Dim aFirstArray() As Variant
+        Dim i As Long, j As Long
+
+
+aFirstArray() = Range("A2:A1618")
+
+On Error Resume Next
+  
+    For Each a In aFirstArray
+        arr.Add a, a
+    Next
+
+
+For i = 1 To arr.Count
+
+    With ActiveSheet
+        .Range("$A$1:$H$1618").AutoFilter
+        .UsedRange.AutoFilter Field:=1, Criteria1:=arr(i)
+        .Range("B1:H1").Select
+        Range(Selection, Selection.End(xlDown)).Select
+        Selection.SpecialCells(xlCellTypeVisible).Select
+        Selection.Copy
+    End With
+    
+
+Set NewBook = Workbooks.Add
+
+    With NewBook
+        
+            .title = arr(i)
+            .Subject = "VT"
+            .ActiveSheet.Range("A1").PasteSpecial
+            .SaveAs FileName:="C:\Users\ReddyAl\Documents\CRA FY16 Q1 Payouts\CRA 2016 Q1 trackers\set1\" & arr(i) & ".xlsx"
+            .Close Savechanges:=True
+            
+    End With
+    
+
+Next i
+
+With Application
+    .ScreenUpdating = True
+    .EnableEvents = True
+    .Calculation = xlCalculationAutomatic
+End With
+
+
+End Sub
