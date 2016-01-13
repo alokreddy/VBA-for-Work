@@ -1,0 +1,72 @@
+
+Public Sub VT_OriginalFile_to_sheet()
+
+    With Application
+        .ScreenUpdating = False
+        .EnableEvents = False
+        .Calculation = xlCalculationManual
+    End With
+
+        Dim arr As New Collection, a
+        Dim aFirstArray1() As Variant
+        Dim i As Long
+        Dim lr As Long
+        Dim topcell As Range
+        Dim ranged As Range
+        Dim sht As Worksheet
+        Dim crange As Range
+        
+        
+Set sht = ActiveWorkbook.Sheets("Sheet1")
+Set topcell = sht.Range("A2")
+
+Set ranged = sht.Range(topcell, topcell.End(xlDown))
+
+
+aFirstArray1() = ranged
+On Error Resume Next
+For Each a In aFirstArray1
+    
+        arr.Add a, a
+    
+    Next
+
+
+For i = 1 To arr.Count
+
+With ActiveWorkbook
+ 
+         .Sheets.Add(After:=Sheets(Sheets.Count), Type:="C:\Users\ReddyAl\Documents\CRA FY16 Q1 Payouts\CRA 2016 Q1 trackers\Sample VT_template.xltx").Name = arr(i)
+   
+'        sht.CurrentRegion.AutoFilter
+        sht.Activate
+
+        sht.UsedRange.AutoFilter Field:=1, Criteria1:=arr(i)
+        Selection.CurrentRegion.Select
+
+        'Selects the current data area without the top row.
+        Selection.Offset(1, 1).Resize(Selection.Rows.Count - 1, Selection.Columns.Count - 1).Select
+
+        ' Selects the visible cells of the selection.
+        ' This is useful if data is filtered or contains hidden rows.
+        'Selection.SpecialCells(xlVisible).Select
+        Selection.SpecialCells(xlCellTypeVisible).Select
+        Selection.Copy
+        .Sheets(arr(i)).Activate
+        .Sheets(arr(i)).Range("A3").Select
+        Selection.PasteSpecial xlPasteValues
+End With
+    
+
+
+
+Next i
+
+With Application
+    .ScreenUpdating = True
+    .EnableEvents = True
+    .Calculation = xlCalculationAutomatic
+End With
+
+
+End Sub
