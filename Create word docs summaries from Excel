@@ -1,0 +1,116 @@
+Sub CRA_Summary()
+
+Application.ScreenUpdating = False
+Application.EnableEvents = False
+Application.Calculation = xlCalculationManual
+Application.DisplayAlerts = False
+Application.CutCopyMode = False
+
+
+Dim lm_list As Range
+Dim Cell As Range
+Dim wapp As Word.Application
+Dim WDoc As Word.Document
+Dim sht1 As Worksheet
+Dim oTbl As Table
+Dim RCount As Integer
+Dim vaData As Variant
+Dim LR As Long
+Dim filepath As String
+
+
+Set sht1 = ThisWorkbook.Sheets("Sheet1")
+Set lm_list = ActiveWorkbook.Sheets("Sheet2").Range("A2:A141")
+
+
+For Each Cell In lm_list
+
+Set wapp = New Word.Application
+wapp.Documents.Add ("C:\Users\ReddyAl\Documents\CRA\FY16 Q3\Summary Statements\CRA Incentive Plan FY16 Q3 statements.dotx"), Visible:=True
+
+Set WDoc = wapp.ActiveDocument
+
+sht1.Range("$A$1:$F$367").AutoFilter Field:=1, Criteria1:=Cell.Value
+
+
+With WDoc
+Set BukMrkRng = WDoc.Bookmarks("LM").Range
+With BukMrkRng
+    .Text = Cell.Text
+    .Font.Bold = True
+    .Font.Size = 12
+    .Font.ColorIndex = wdRed
+End With
+    
+    
+Set oTbl = .Tables(1)
+  
+LR = sht1.Range("A" & Rows.Count).End(xlUp).Row
+sht1.Range("B2:F" & LR).SpecialCells(xlCellTypeVisible).Select
+RCount = Selection.Rows.Count
+vaData = Selection.Value
+
+    For i = 1 To RCount
+        For j = 1 To 5
+        
+                oTbl.Cell(i + 1, j).Range.Text = vaData(i, j)
+        
+        Next j
+    Next i
+
+filepath = "FY16 Q3 " & Cell.Text
+
+
+    .SaveAs2 ("C:\Users\ReddyAl\Documents\CRA\FY16 Q3\Summary Statements\word\" & filepath)
+    .Close
+
+End With
+
+Next Cell
+
+With Application
+.ScreenUpdating = True: .EnableEvents = True: .Calculation = xlCalculationAutomatic: .DisplayAlerts = True: .CutCopyMode = True
+End With
+
+MsgBox "Done!"
+
+End Sub
+
+
+Sub openAllfilesInALocation()
+Dim Num As Integer
+Dim wapp As Word.Application
+Dim WDoc As Word.Document
+Dim Doc
+Dim i As Integer
+Dim j As Integer
+Dim docToOpen As FileDialog
+Dim oRow As Row
+Dim oCell As Cell
+Set docToOpen = Application.FileDialog(msoFileDialogFilePicker)
+docToOpen.Show
+
+
+For i = 1 To docToOpen.SelectedItems.Count
+Num = 55
+    'Open each document
+    Set wapp = New Word.Application
+    Set WDoc = Documents.Open(Filename:=docToOpen.SelectedItems(i))
+        For Each oRow In ActiveDocument.Tables(1).Rows
+            For Each oCell In oRow.Cells
+            If Len(oCell.Range.Text) <> 2 Then
+                Num = Num - 1
+            End If
+            Next oCell
+        Next oRow
+        
+        ActiveSheet.Cells(i, 3).Value = ActiveDocument.Name
+        ActiveSheet.Cells(i, 4).Value = 10 - (Num / 5)
+
+    WDoc.Save
+    WDoc.Close
+Next i
+
+MsgBox "Task Complete"
+End Sub
+
