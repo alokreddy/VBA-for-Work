@@ -1,0 +1,73 @@
+Sub alokword()
+
+
+
+
+For i = 1 To ActiveDocument.Tables.Count
+    
+    ActiveDocument.Tables(i).Rows.Alignment = wdAlignRowCenter
+    ActiveDocument.Tables(i).PreferredWidthType = wdPreferredWidthPoints
+    ActiveDocument.Tables(i).PreferredWidth = InchesToPoints(6.5)
+    ActiveDocument.Tables(i).Rows.HeightRule = wdRowHeightAtLeast
+    ActiveDocument.Tables(i).Rows.Height = InchesToPoints(0.18)
+    ActiveDocument.Tables(i).Rows.AllowBreakAcrossPages = False
+    ActiveDocument.Tables(i).Rows.HeadingFormat = True
+    ActiveDocument.Tables(i).Range.ParagraphFormat.Alignment = wdAlignParagraphCenter
+
+
+    Set tbl = ActiveDocument.Range(Start:=ActiveDocument.Tables(i).Cell(1, 1).Range.Start, End:=ActiveDocument.Tables(i).Cell(ActiveDocument.Tables(i).Rows.Count, ActiveDocument.Tables(i).Columns.Count).Range.End)
+    
+    tbl.Select
+        
+    With tbl.Font
+        .Bold = False
+        .Name = "Arial"
+        .Size = 8
+    End With
+    
+        
+
+'    Set fcol = ActiveDocument.Range(Start:=ActiveDocument.Tables(i).Cell(2, 1), End:=ActiveDocument.Tables(i).Cell(ActiveDocument.Tables(i).Rows.Count, 1))
+'
+'    fcol.Select
+'
+'    With fcol.Font
+'        .Bold = False
+'        .Name = "Arial"
+'        .Size = 8
+'    End With
+    
+    'Selection.Range.ParagraphFormat.Alignment = wdAlignParagraphLeft
+
+    Set fow = ActiveDocument.Tables(i).Rows(1)
+    'Range(Start:=ActiveDocument.Tables(i).Cell(1, 1).Range.Start, End:=ActiveDocument.Tables(i).Cell(1, ActiveDocument.Tables(i).Columns.Count).Range.End)
+
+    fow.Select
+
+    With Selection.Font
+        .Bold = True
+        .Name = "Arial"
+        .Size = 10
+    End With
+    
+'    Selection.Range.ParagraphFormat.Alignment = wdAlignParagraphCenter
+    
+'    Set sow = ActiveDocument.Range(Start:=ActiveDocument.Tables(i).Cell(2, 1).Range.Start, End:=ActiveDocument.Tables(i).Cell(2, ActiveDocument.Tables(i).Columns.Count).Range.End)
+'
+'    sow.Select
+'
+'    With Selection.Font
+'        .Bold = True
+'        .Name = "Arial"
+'        .Size = 8
+'    End With
+
+        
+    
+Next i
+
+
+
+MsgBox "Task Complete!!"
+
+End Sub

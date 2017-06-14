@@ -1,0 +1,34 @@
+Sub openAllfilesInALocation()
+Dim Doc
+Dim i As Integer
+
+Dim docToOpen As FileDialog
+Set docToOpen = Application.FileDialog(msoFileDialogFilePicker)
+    docToOpen.Show
+
+For i = 1 To docToOpen.SelectedItems.Count
+'Open each document
+Set Doc = Documents.Open(FileName:=docToOpen.SelectedItems(i))
+
+For j = 3 To ActiveDocument.Sections.Count
+With ActiveDocument.Sections(j)
+'    .Headers(wdHeaderFooterPrimary).Range.Font.Size = 8
+'    Text = "Header goes here"
+    .Footers(wdHeaderFooterPrimary).Range.Font.Size = 8
+    .Footers(wdHeaderFooterPrimary).Range.Font.Color = 7223074
+    .Footers(wdHeaderFooterEvenPages).Range.Font.Size = 8
+    .Footers(wdHeaderFooterEvenPages).Range.Font.Color = 7223074
+'    Text = "Footer goes here"
+End With
+Next j
+
+
+ActiveDocument.SaveAs2 Replace(ActiveDocument.FullName, ActiveDocument.Name, "") + Mid(ActiveDocument.Name, 1, InStr(1, ActiveDocument.Name, ".") - 1) + ".pdf", Word.WdSaveFormat.wdFormatPDF
+Doc.Save
+Doc.Close
+
+Next i
+
+MsgBox "Task Complete"
+
+End Sub
